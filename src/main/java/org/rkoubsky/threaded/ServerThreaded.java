@@ -15,7 +15,7 @@ import java.util.concurrent.TimeUnit;
  * Server which runs each request in a separate thread.
  */
 public class ServerThreaded implements Runnable {
-   ServerSocket serverSocket;
+   private final ServerSocket serverSocket;
    volatile boolean keepProcessing = true;
 
    public ServerThreaded(final int port, final int millisecondsTimeout) throws IOException {

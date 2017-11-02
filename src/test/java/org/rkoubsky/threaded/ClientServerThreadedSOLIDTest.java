@@ -10,18 +10,18 @@ import java.io.IOException;
 /**
  * @author Radek Koubsky (radekkoubsky@gmail.com)
  */
-public class ClientTestServerThreaded {
+public class ClientServerThreadedSOLIDTest {
    private static final int PORT = 8010;
    private static final int TIMEOUT = 2000;
-
-   ServerThreaded serverThreaded;
-   Thread serverThread;
+   private ServerThreadedSOLID serverThreadedSOLID;
+   private Thread serverThread;
 
    @Before
    public void createServer() throws Exception {
       try {
-         this.serverThreaded = new ServerThreaded(PORT, TIMEOUT);
-         this.serverThread = new Thread(this.serverThreaded);
+         this.serverThreadedSOLID =
+               new ServerThreadedSOLID(new ConnectionManager(PORT, TIMEOUT), new ThreadPerRequestScheduler());
+         this.serverThread = new Thread(this.serverThreadedSOLID);
          this.serverThread.start();
       } catch (final IOException e) {
          e.printStackTrace(System.err);
@@ -31,8 +31,8 @@ public class ClientTestServerThreaded {
 
    @After
    public void shutdownServer() throws InterruptedException {
-      if (this.serverThreaded != null) {
-         this.serverThreaded.stopProcessing();
+      if (this.serverThreadedSOLID != null) {
+         this.serverThreadedSOLID.stopProcessing();
          this.serverThread.join();
       }
    }
