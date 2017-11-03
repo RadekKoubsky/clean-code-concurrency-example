@@ -1,18 +1,18 @@
-package org.rkoubsky.threaded;
+package org.rkoubsky.examples.server.threaded;
 
-import org.rkoubsky.utils.MessageUtils;
+import org.rkoubsky.examples.server.threaded.connection.ClientConnection;
+import org.rkoubsky.examples.server.threaded.connection.ClientRequestProcessor;
+import org.rkoubsky.examples.server.threaded.connection.ConnectionManager;
+import org.rkoubsky.examples.server.threaded.policy.ClientScheduler;
 
 import java.io.IOException;
-import java.net.ServerSocket;
-import java.net.Socket;
 import java.net.SocketException;
 import java.time.LocalDateTime;
-import java.util.concurrent.TimeUnit;
 
 /**
  * @author Radek Koubsky (radekkoubsky@gmail.com)
  */
-public class ServerThreadedSOLID implements  Runnable{
+public class ServerThreadedSOLID implements Runnable{
    private final ConnectionManager connectionManager;
    private final ClientScheduler clientScheduler;
    volatile boolean keepProcessing = true;
@@ -27,9 +27,9 @@ public class ServerThreadedSOLID implements  Runnable{
 
       while (this.keepProcessing) {
          try {
-            ClientConnection clientConnection = connectionManager.awaitClient();
+            ClientConnection clientConnection = this.connectionManager.awaitClient();
             ClientRequestProcessor requestProcessor = new ClientRequestProcessor(clientConnection);
-            clientScheduler.schedule(requestProcessor);
+            this.clientScheduler.schedule(requestProcessor);
          } catch (final IOException e) {
             handle(e);
          }
@@ -46,7 +46,7 @@ public class ServerThreadedSOLID implements  Runnable{
    public void stopProcessing() {
       System.out.println("Shutting down server.");
       this.keepProcessing = false;
-      connectionManager.closeServerSocket();
+      this.connectionManager.closeServerSocket();
    }
 
 

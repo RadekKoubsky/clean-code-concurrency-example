@@ -1,4 +1,4 @@
-package org.rkoubsky.threaded;
+package org.rkoubsky.examples.server.threaded.connection;
 
 import java.net.Socket;
 
@@ -13,6 +13,6 @@ public class ClientConnection {
    }
 
    public Socket getSocket() {
-      return socket;
+      return this.socket;
    }
 }

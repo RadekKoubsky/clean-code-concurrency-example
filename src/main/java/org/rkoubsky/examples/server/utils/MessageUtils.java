@@ -1,4 +1,4 @@
-package org.rkoubsky.utils;
+package org.rkoubsky.examples.server.utils;
 
 import java.io.IOException;
 import java.io.InputStream;

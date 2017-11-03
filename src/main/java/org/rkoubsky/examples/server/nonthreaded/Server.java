@@ -1,6 +1,6 @@
-package org.rkoubsky.nonthreaded;
+package org.rkoubsky.examples.server.nonthreaded;
 
-import org.rkoubsky.utils.MessageUtils;
+import org.rkoubsky.examples.server.utils.MessageUtils;
 
 import java.io.IOException;
 import java.net.ServerSocket;
@@ -12,8 +12,8 @@ import java.util.concurrent.TimeUnit;
  * @author Radek Koubsky (radekkoubsky@gmail.com)
  */
 public class Server implements Runnable {
-   ServerSocket serverSocket;
-   volatile boolean keepProcessing = true;
+   private final ServerSocket serverSocket;
+   private volatile boolean keepProcessing = true;
 
    public Server(final int port, final int millisecondsTimeout) throws IOException {
       this.serverSocket = new ServerSocket(port);

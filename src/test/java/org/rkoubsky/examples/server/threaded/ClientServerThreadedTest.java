@@ -1,9 +1,9 @@
-package org.rkoubsky.threaded;
+package org.rkoubsky.examples.server.threaded;
 
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
-import org.rkoubsky.TrivialClient;
+import org.rkoubsky.examples.server.TrivialClient;
 
 import java.io.IOException;
 

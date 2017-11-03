@@ -1,9 +1,9 @@
-package org.rkoubsky;
+package org.rkoubsky.examples.server.nonthreaded;
 
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
-import org.rkoubsky.nonthreaded.Server;
+import org.rkoubsky.examples.server.TrivialClient;
 
 import java.io.IOException;
 import java.util.stream.IntStream;
@@ -11,7 +11,7 @@ import java.util.stream.IntStream;
 /**
  * @author Radek Koubsky (radekkoubsky@gmail.com)
  */
-public class ClientTest {
+public class ClientServerNonThreadedTest {
    private static final int PORT = 8009;
    private static final int TIMEOUT = 1000;
 

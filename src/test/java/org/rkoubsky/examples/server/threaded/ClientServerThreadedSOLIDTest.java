@@ -1,26 +1,42 @@
-package org.rkoubsky.threaded;
+package org.rkoubsky.examples.server.threaded;
 
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
-import org.rkoubsky.TrivialClient;
+import org.junit.runner.RunWith;
+import org.junit.runners.Parameterized;
+import org.rkoubsky.examples.server.TrivialClient;
+import org.rkoubsky.examples.server.threaded.connection.ConnectionManager;
+import org.rkoubsky.examples.server.threaded.policy.ExecutorClientScheduler;
+import org.rkoubsky.examples.server.threaded.policy.ThreadPerRequestClientScheduler;
+import org.rkoubsky.examples.server.threaded.policy.ClientScheduler;
 
 import java.io.IOException;
+import java.util.Arrays;
 
 /**
  * @author Radek Koubsky (radekkoubsky@gmail.com)
  */
+@RunWith(Parameterized.class)
 public class ClientServerThreadedSOLIDTest {
    private static final int PORT = 8010;
    private static final int TIMEOUT = 2000;
    private ServerThreadedSOLID serverThreadedSOLID;
    private Thread serverThread;
 
+   @Parameterized.Parameters
+   public static Iterable<? extends Object> data() {
+      return Arrays.asList(new ThreadPerRequestClientScheduler(), new ExecutorClientScheduler(5));
+   }
+
+   @Parameterized.Parameter
+   public ClientScheduler clientScheduler;
+
    @Before
    public void createServer() throws Exception {
       try {
          this.serverThreadedSOLID =
-               new ServerThreadedSOLID(new ConnectionManager(PORT, TIMEOUT), new ThreadPerRequestScheduler());
+               new ServerThreadedSOLID(new ConnectionManager(PORT, TIMEOUT), this.clientScheduler);
          this.serverThread = new Thread(this.serverThreadedSOLID);
          this.serverThread.start();
       } catch (final IOException e) {

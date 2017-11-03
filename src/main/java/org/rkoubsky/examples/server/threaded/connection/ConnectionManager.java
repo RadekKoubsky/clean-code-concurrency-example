@@ -1,4 +1,4 @@
-package org.rkoubsky.threaded;
+package org.rkoubsky.examples.server.threaded.connection;
 
 import java.io.IOException;
 import java.net.ServerSocket;

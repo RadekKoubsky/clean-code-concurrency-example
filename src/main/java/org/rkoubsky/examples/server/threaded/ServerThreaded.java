@@ -1,6 +1,6 @@
-package org.rkoubsky.threaded;
+package org.rkoubsky.examples.server.threaded;
 
-import org.rkoubsky.utils.MessageUtils;
+import org.rkoubsky.examples.server.utils.MessageUtils;
 
 import java.io.IOException;
 import java.net.ServerSocket;
