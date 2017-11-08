@@ -11,16 +11,16 @@ import java.net.Socket;
  * @author Radek Koubsky (radekkoubsky@gmail.com)
  */
 public class MessageUtils {
-   public static void sendMessage(final Socket socket, final String message) throws IOException {
-      final OutputStream socketOutputStream = socket.getOutputStream();
-      final ObjectOutputStream ois = new ObjectOutputStream(socketOutputStream);
-      ois.writeUTF(message);
-      ois.flush();
-   }
+    public static void sendMessage(final Socket socket, final String message) throws IOException {
+        final OutputStream socketOutputStream = socket.getOutputStream();
+        final ObjectOutputStream ois = new ObjectOutputStream(socketOutputStream);
+        ois.writeUTF(message);
+        ois.flush();
+    }
 
-   public static String getMessage(final Socket socket) throws IOException {
-      final InputStream socketInputStream = socket.getInputStream();
-      final ObjectInputStream ois = new ObjectInputStream(socketInputStream);
-      return ois.readUTF();
-   }
+    public static String getMessage(final Socket socket) throws IOException {
+        final InputStream socketInputStream = socket.getInputStream();
+        final ObjectInputStream ois = new ObjectInputStream(socketInputStream);
+        return ois.readUTF();
+    }
 }

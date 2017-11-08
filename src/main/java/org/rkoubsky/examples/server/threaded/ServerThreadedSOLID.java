@@ -12,42 +12,44 @@ import java.time.LocalDateTime;
 /**
  * @author Radek Koubsky (radekkoubsky@gmail.com)
  */
-public class ServerThreadedSOLID implements Runnable{
-   private final ConnectionManager connectionManager;
-   private final ClientScheduler clientScheduler;
-   volatile boolean keepProcessing = true;
+public class ServerThreadedSOLID implements Runnable {
+    private final ConnectionManager connectionManager;
+    private final ClientScheduler clientScheduler;
+    volatile boolean keepProcessing = true;
 
-   public ServerThreadedSOLID(ConnectionManager connectionManager, ClientScheduler clientScheduler) throws IOException {
-      this.connectionManager = connectionManager;
-      this.clientScheduler = clientScheduler;
-   }
+    public ServerThreadedSOLID(ConnectionManager connectionManager,
+            ClientScheduler clientScheduler) throws IOException {
+        this.connectionManager = connectionManager;
+        this.clientScheduler = clientScheduler;
+    }
 
-   public void run() {
-      System.out.println("Server Starting");
+    public void run() {
+        System.out.println("Server Starting");
 
-      while (this.keepProcessing) {
-         try {
-            ClientConnection clientConnection = this.connectionManager.awaitClient();
-            ClientRequestProcessor requestProcessor = new ClientRequestProcessor(clientConnection);
-            this.clientScheduler.schedule(requestProcessor);
-         } catch (final IOException e) {
-            handle(e);
-         }
-      }
-   }
+        while (this.keepProcessing) {
+            try {
+                ClientConnection clientConnection = this.connectionManager.awaitClient();
+                ClientRequestProcessor requestProcessor = new ClientRequestProcessor(clientConnection);
+                this.clientScheduler.schedule(requestProcessor);
+            } catch (final IOException e) {
+                handle(e);
+            }
+        }
+    }
 
-   private void handle(final IOException e) {
-      if (!(e instanceof SocketException)) {
-         System.out.printf("Socket timeout, thread %s, time %s \n", Thread.currentThread().getId(), LocalDateTime.now());
-         e.printStackTrace();
-      }
-   }
+    private void handle(final IOException e) {
+        if (!(e instanceof SocketException)) {
+            System.out.printf("Socket timeout, thread %s, time %s \n", Thread.currentThread().getId(),
+                    LocalDateTime.now());
+            e.printStackTrace();
+        }
+    }
 
-   public void stopProcessing() {
-      System.out.println("Shutting down server.");
-      this.keepProcessing = false;
-      this.connectionManager.closeServerSocket();
-   }
+    public void stopProcessing() {
+        System.out.println("Shutting down server.");
+        this.keepProcessing = false;
+        this.connectionManager.closeServerSocket();
+    }
 
 
 }

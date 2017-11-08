@@ -8,15 +8,15 @@ import java.util.concurrent.Executors;
 /**
  * @author Radek Koubsky (radekkoubsky@gmail.com)
  */
-public class ExecutorClientScheduler implements ClientScheduler{
-   private final Executor executor;
+public class ExecutorClientScheduler implements ClientScheduler {
+    private final Executor executor;
 
-   public ExecutorClientScheduler(int availableThreads) {
-      this.executor = Executors.newFixedThreadPool(availableThreads);
-   }
+    public ExecutorClientScheduler(int availableThreads) {
+        this.executor = Executors.newFixedThreadPool(availableThreads);
+    }
 
-   @Override
-   public void schedule(final ClientRequestProcessor requestProcessor) {
-      this.executor.execute(requestProcessor::process);
-   }
+    @Override
+    public void schedule(final ClientRequestProcessor requestProcessor) {
+        this.executor.execute(requestProcessor::process);
+    }
 }
