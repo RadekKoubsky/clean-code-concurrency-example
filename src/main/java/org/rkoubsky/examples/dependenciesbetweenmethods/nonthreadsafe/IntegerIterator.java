@@ -1,4 +1,4 @@
-package org.rkbousky.examples.dependenciesbetweenmethods.nonthreadsafe;
+package org.rkoubsky.examples.dependenciesbetweenmethods.nonthreadsafe;
 
 import java.util.Iterator;
 

@@ -1,11 +1,11 @@
-package org.rkbousky.examples.dependenciesbetweenmethods;
+package org.rkoubsky.examples.dependenciesbetweenmethods;
 
 import org.assertj.core.api.Assertions;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.junit.runners.Parameterized;
-import org.rkbousky.examples.dependenciesbetweenmethods.nonthreadsafe.IntegerIterator;
-import org.rkbousky.examples.dependenciesbetweenmethods.nonthreadsafe.NonthreadSafeClient;
+import org.rkoubsky.examples.dependenciesbetweenmethods.clientbasedlocking.ThreadSafeClient;
+import org.rkoubsky.examples.dependenciesbetweenmethods.nonthreadsafe.IntegerIterator;
 
 import java.util.Arrays;
 import java.util.Collections;
@@ -17,16 +17,15 @@ import java.util.concurrent.TimeUnit;
  * @author Radek Koubsky (radekkoubsky@gmail.com)
  */
 @RunWith(Parameterized.class)
-public class NonthreadsafeClientTest {
-
+public class ClientBasedLockingTest {
     @Parameterized.Parameters
     public static List<Object[]> data() {
         return Arrays.asList(new Object[5][0]);
     }
 
     @Test
-    public void iteratorShouldFailDuringConcurrentAccessTest() throws InterruptedException {
-        final NonthreadSafeClient client = new NonthreadSafeClient();
+    public void iteratorShouldNotFailDuringConcurrentAccessTest() throws InterruptedException {
+        final ThreadSafeClient client = new ThreadSafeClient();
         final List<Throwable> concurrentAccessExceptions = Collections.synchronizedList(new LinkedList<>());
         final Thread.UncaughtExceptionHandler handler = getUncaughtExceptionHandler(concurrentAccessExceptions);
         startThread(client, handler, "first");
@@ -34,11 +33,8 @@ public class NonthreadsafeClientTest {
         waitForIteratorEnd(client);
         System.out.println("Iterator value after the test: " + client.getIterator().getNextValue());
         Assertions.assertThat(concurrentAccessExceptions.isEmpty())
-                .as("There has not been any concurrent access exception, try the test again to hit the corner case.")
-                .isFalse();
-        Assertions.assertThat(concurrentAccessExceptions)
-                .as("There should be only one concurrent access exception thrown by the integer iterator.")
-                .hasSize(1);
+                .as("There should not be any concurrent access exception as we use client based locking properly.")
+                .isTrue();
     }
 
     private Thread.UncaughtExceptionHandler getUncaughtExceptionHandler(
@@ -50,14 +46,14 @@ public class NonthreadsafeClientTest {
         };
     }
 
-    private void startThread(
-            final NonthreadSafeClient client, final Thread.UncaughtExceptionHandler handler, final String threadName) {
+    private void startThread(final ThreadSafeClient client, final Thread.UncaughtExceptionHandler handler,
+            final String threadName) {
         final Thread thread = new Thread(client::printIterator, threadName);
         thread.setUncaughtExceptionHandler(handler);
         thread.start();
     }
 
-    private void waitForIteratorEnd(final NonthreadSafeClient client) throws InterruptedException {
+    private void waitForIteratorEnd(final ThreadSafeClient client) throws InterruptedException {
         while (client.getIterator().getNextValue() != IntegerIterator.MAX_SIZE) {
             TimeUnit.SECONDS.sleep(2);
         }

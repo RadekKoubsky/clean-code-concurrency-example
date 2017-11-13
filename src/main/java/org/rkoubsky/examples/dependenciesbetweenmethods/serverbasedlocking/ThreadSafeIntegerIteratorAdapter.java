@@ -1,6 +1,6 @@
-package org.rkbousky.examples.dependenciesbetweenmethods.serverbasedlocking;
+package org.rkoubsky.examples.dependenciesbetweenmethods.serverbasedlocking;
 
-import org.rkbousky.examples.dependenciesbetweenmethods.nonthreadsafe.IntegerIterator;
+import org.rkoubsky.examples.dependenciesbetweenmethods.nonthreadsafe.IntegerIterator;
 
 /**
  * @author Radek Koubsky (radekkoubsky@gmail.com)

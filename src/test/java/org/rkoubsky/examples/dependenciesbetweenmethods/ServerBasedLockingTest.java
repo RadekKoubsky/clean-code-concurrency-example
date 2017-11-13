@@ -1,11 +1,11 @@
-package org.rkbousky.examples.dependenciesbetweenmethods;
+package org.rkoubsky.examples.dependenciesbetweenmethods;
 
 import org.assertj.core.api.Assertions;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.junit.runners.Parameterized;
-import org.rkbousky.examples.dependenciesbetweenmethods.clientbasedlocking.ThreadSafeClient;
-import org.rkbousky.examples.dependenciesbetweenmethods.nonthreadsafe.IntegerIterator;
+import org.rkoubsky.examples.dependenciesbetweenmethods.serverbasedlocking.IntegerIteratorServerLocked;
+import org.rkoubsky.examples.dependenciesbetweenmethods.serverbasedlocking.ThreadSafeClient;
 
 import java.util.Arrays;
 import java.util.Collections;
@@ -17,7 +17,7 @@ import java.util.concurrent.TimeUnit;
  * @author Radek Koubsky (radekkoubsky@gmail.com)
  */
 @RunWith(Parameterized.class)
-public class ClientBasedLockingTest {
+public class ServerBasedLockingTest {
     @Parameterized.Parameters
     public static List<Object[]> data() {
         return Arrays.asList(new Object[5][0]);
@@ -33,7 +33,7 @@ public class ClientBasedLockingTest {
         waitForIteratorEnd(client);
         System.out.println("Iterator value after the test: " + client.getIterator().getNextValue());
         Assertions.assertThat(concurrentAccessExceptions.isEmpty())
-                .as("There should not be any concurrent access exception as we use client based locking properly.")
+                .as("There should not be any concurrent access exception as we use server based locking properly.")
                 .isTrue();
     }
 
@@ -54,7 +54,7 @@ public class ClientBasedLockingTest {
     }
 
     private void waitForIteratorEnd(final ThreadSafeClient client) throws InterruptedException {
-        while (client.getIterator().getNextValue() != IntegerIterator.MAX_SIZE) {
+        while (client.getIterator().getNextValue() != IntegerIteratorServerLocked.MAX_SIZE) {
             TimeUnit.SECONDS.sleep(2);
         }
     }

@@ -1,4 +1,4 @@
-package org.rkbousky.examples.dependenciesbetweenmethods.serverbasedlocking;
+package org.rkoubsky.examples.dependenciesbetweenmethods.serverbasedlocking;
 
 /**
  * @author Radek Koubsky (radekkoubsky@gmail.com)

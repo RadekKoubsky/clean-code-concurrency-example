@@ -1,6 +1,6 @@
-package org.rkbousky.examples.dependenciesbetweenmethods.clientbasedlocking;
+package org.rkoubsky.examples.dependenciesbetweenmethods.clientbasedlocking;
 
-import org.rkbousky.examples.dependenciesbetweenmethods.nonthreadsafe.IntegerIterator;
+import org.rkoubsky.examples.dependenciesbetweenmethods.nonthreadsafe.IntegerIterator;
 
 import java.util.concurrent.TimeUnit;
 
